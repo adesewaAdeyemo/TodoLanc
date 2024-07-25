@@ -143,14 +143,13 @@ export default function Table() {
               rows
             ) : (
               <tr>
-                {" "}
               </tr>
             )}
           </tbody>
           {rows && rows.length ? <></> :
-            <p className="text-center text-slate-400 italic font-thin min-w-full text-nowrap py-2 px-3">
-              Table is empty ...
-            </p>
+            <tfoot className="text-center text-slate-400 italic font-thin min-w-full text-nowrap py-2 px-3">
+              <td colSpan={10}>No Records Found</td>
+            </tfoot>
 
 
 
