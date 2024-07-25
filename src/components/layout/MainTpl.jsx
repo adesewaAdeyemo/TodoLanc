@@ -3,7 +3,7 @@ import SideNav from './Nav/SideNav'
 import TopNav from './Nav/TopNav'
 
 
-export default function MainTpl({content}) {
+export default function MainTpl({children}) {
 
   return (
 
@@ -12,7 +12,7 @@ export default function MainTpl({content}) {
       <TopNav />
       <div className="flex flex-row">
         <SideNav />
-        <div className="main w-full p-9 overflow-scroll">{content}</div>
+        <div className="main w-full p-9 overflow-scroll">{children}</div>
       </div>
     </div>
 

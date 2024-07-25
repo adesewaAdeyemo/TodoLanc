@@ -3,13 +3,27 @@ import Button from "./Button";
 import Form from "./Form";
 import { ToDoContext } from "../layout/pages/Task";
 
+const tableHeader = [
+  "S/N",
+  "Title",
+  "Priority",
+  "Description",
+  "Project",
+  "Deadline",
+  "Repeat",
+  "Assignee",
+  "Assign",
+  "Status",
+]
+
+
 export default function Table() {
-  const { tableData, setTableData, showForm, setShowForm, setCurrentData } =
+  const { tableData, setTableData, showForm, setShowForm, setCurrentData, tasks, setTasks } =
     useContext(ToDoContext);
 
   const title = tableData.title ? tableData.title : "Title";
-  const tableHeader = tableData.header;
-  const tableRows = tableData.rows;
+
+  const tableRows = tasks;
 
   const open = (uid) => {
     let id = uid;
@@ -23,6 +37,7 @@ export default function Table() {
 
   const addNew = (e) => {
     e.preventDefault;
+    console.log("add new", tasks);
     setShowForm(!showForm);
     setCurrentId(currentId + 1);
   };
@@ -32,25 +47,21 @@ export default function Table() {
     e.preventDefault;
     let id = e.target.id;
     // console.log(tableRows.filter((item) => item.idx !== id));
-    setTableData({
-      ...tableData,
-      rows: tableRows.filter((item) => item.idx !== id),
-    });
+    setTasks(
+      tableRows.filter((item) => item.idx !== id),
+    );
   };
 
   const searchTaskToLower = (e) => {
     e.preventDefault;
     let search = e.target.value;
 
-    if (search === "") return setTableData({ ...tableData, rows: tableRows });
+    if (search === "") return setTasks(tableRows);
 
     search = search.toLowerCase();
-    setTableData({
-      ...tableData,
-      rows: tableRows.filter((item) =>
+    setTasks(tableRows.filter((item) =>
         item.title.toLowerCase().includes(search)
-      ),
-    });
+      ));
   };
 
   let header = tableHeader.map((item, idx) => (

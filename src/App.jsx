@@ -6,7 +6,9 @@ function App() {
   return (
     <>
       <div className="w-full">
-        <MainTpl content={<Task />} />
+        <MainTpl>
+          <Task />
+        </MainTpl>
       </div>
     </>
   );

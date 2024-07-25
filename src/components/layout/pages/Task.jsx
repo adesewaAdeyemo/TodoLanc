@@ -4,6 +4,8 @@ import Table from "../../element/Table";
 export const ToDoContext = createContext({
   tableData: null,
   setTableData: (tableData) => {},
+  tasks: [],
+  setTasks: (tasks) => {},
   showForm: false,
   setShowForm: (showForm) => {},
   currentData: null, //what is the difference between null and []
@@ -12,6 +14,7 @@ export const ToDoContext = createContext({
 
 export default function Task() {
   const [tableData, setTableData] = useState(null);
+  const [tasks, setTasks] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [currentData, setCurrentData] = useState(null);
 
@@ -111,7 +114,7 @@ export default function Task() {
 
   return (
     <ToDoContext.Provider
-      value={{ tableData, setTableData, showForm, setShowForm, currentData, setCurrentData }}
+      value={{ tableData, setTableData, showForm, setShowForm, currentData, setCurrentData, tasks, setTasks }}
     >
       <div>
         <Table />

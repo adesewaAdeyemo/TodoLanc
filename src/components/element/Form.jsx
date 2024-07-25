@@ -2,12 +2,27 @@ import React, { useContext, useState } from 'react'
 import Button from './Button'
 import { ToDoContext } from '../layout/pages/Task';
 import Input from './Input';
+
+
+const tableHeader = [
+  "S/N",
+  "Title",
+  "Priority",
+  "Description",
+  "Project",
+  "Deadline",
+  "Repeat",
+  "Assignee",
+  "Assign",
+  "Status",
+]
+
 export default function Form( props ) {
-  const { tableData, setTableData, showForm, setShowForm, currentData, setCurrentData } = useContext(ToDoContext);
+  const { showForm, setShowForm, currentData, setCurrentData, tasks, setTasks } = useContext(ToDoContext);
 
-  const title = tableData.title ? tableData.title : "Title";
+  // const title = tableData.title ? tableData.title : "Title";
 
-  const tableHeader = tableData.header;
+  // const tableHeader = ;
 
   const currentId = props.currentId ? props.currentId : 1;
   // const [currentId, setCurrentId] = useState(1);
@@ -42,6 +57,7 @@ export default function Form( props ) {
     );
   });
   const closeForm = (e) => {
+    console.log("close form", tasks)
     e.preventDefault
     setCurrentData(null)
     setShowForm(!showForm)
@@ -49,6 +65,7 @@ export default function Form( props ) {
 
   const submitForm = (e) => {
     try {
+     console.log("before submitting", tasks)
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
@@ -56,8 +73,15 @@ export default function Form( props ) {
       console.log("Title field is required");
       return("Title field is required");
     }
-    console.log(data.idx);
-    setTableData({ ...tableData, rows: [...tableData.rows, data] });
+    
+    // setTableData({ ...tableData, rows: [...tableData.rows, data] });
+    setTasks(tasks =>{
+      console.log("added",  [...tasks, {
+        ...data,
+        idx: Math.floor(Math.random() * 1000000000).toString().padStart(9, "0")
+      }])
+      return  [...tasks, data]
+    });
     // console.log(tableData);
     closeForm(e);
     alert("Form Submitted");
@@ -71,15 +95,16 @@ export default function Form( props ) {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     const id = currentData[0].idx;
-    const newData = tableData.rows.map((item) => {
+    const newData = tasks.map((item) => {
       if (item.idx === id) {
         return data;
       } else {
         return item;
       }
     });
-    setTableData({ ...tableData, rows: newData });
-    console.log(tableData);
+    // setTableData({ ...tableData, rows: newData });
+    setTasks(tasks => [...tasks, newData]);
+    // console.log(tableData);
     setCurrentData(null);
     closeForm(e);
     alert("Form Updated");
@@ -102,7 +127,7 @@ export default function Form( props ) {
         <div className="">
           <div className="flex">
             <h2 className="text-2xl font-medium leading-7 text-slate-700">
-              {title} Form
+              Task Form
             </h2>
             {currentData == null ? (
               <Button cancel='true' onClick={closeForm}></Button>
