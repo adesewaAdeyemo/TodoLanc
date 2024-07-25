@@ -142,22 +142,23 @@ export default function Table() {
             {rows && rows.length ? (
               rows
             ) : (
-              <tr>
+              <tr className="text-center text-slate-400 italic font-thin min-w-full text-nowrap py-2 px-3">
+                <td colSpan={10}>No Records Found</td>
               </tr>
             )}
           </tbody>
-          {rows && rows.length ? <></> :
+          {/* {rows && rows.length ? <></> :
             <tfoot className="text-center text-slate-400 italic font-thin min-w-full text-nowrap py-2 px-3">
               <td colSpan={10}>No Records Found</td>
             </tfoot>
 
 
 
-          }
+          }*/}
         </table>
       </div>
 
-      {showForm ? <Form currentId={currentId}/> : null}
+      {showForm ? <Form currentId={currentId} /> : null}
     </div>
   );
 }
