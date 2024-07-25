@@ -25,9 +25,9 @@ export default function Table() {
   };
 
   const deleteTask = (e) => {
+    e.stopPropagation();
     e.preventDefault;
     let id = e.target.id*1 + 1;
-    console.log(id);
     setTableData({ ...tableData, rows: tableRows.filter((item) => item.idx !== id) });
   };
 
@@ -89,7 +89,7 @@ export default function Table() {
       </td>
       <td className="border px-4 py-2 font-normal text-slate-700">
         <a href="#" id={index} onClick={deleteTask}>
-          X
+          <Button cancel='true'></Button>
         </a>
       </td>
     </tr>
@@ -128,7 +128,7 @@ export default function Table() {
               <th className="border px-4 py-2 font-normal text-slate-900"></th>
             </tr>
           </thead>
-          <tbody>{rows}</tbody>
+          <tbody>{rows && rows.length ? rows : <p className="text-center text-slate-400 italic py-2 font-thin">Table is empty ...  </p>}</tbody>
         </table>
       </div>
 

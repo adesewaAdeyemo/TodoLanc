@@ -6,7 +6,7 @@ export const ToDoContext = createContext({
   setTableData: (tableData) => {},
   showForm: false,
   setShowForm: (showForm) => {},
-  currentData: null,
+  currentData: null, //what is the difference between null and []
   setCurrentData: (currentData) => {},
 });
 
