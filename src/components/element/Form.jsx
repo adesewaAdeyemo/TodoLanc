@@ -1,15 +1,22 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Button from './Button'
 import { ToDoContext } from '../layout/pages/Task';
 import Input from './Input';
-export default function Form() {
+export default function Form( props ) {
   const { tableData, setTableData, showForm, setShowForm, currentData, setCurrentData } = useContext(ToDoContext);
 
   const title = tableData.title ? tableData.title : "Title";
 
   const tableHeader = tableData.header;
 
-  
+  const currentId = props.currentId ? props.currentId : 1;
+  // const [currentId, setCurrentId] = useState(1);
+  // const currentId = () => {
+  //     const randomNum = Math.floor(Math.random() * 1000000000);
+  //     return randomNum.toString().padStart(9, "0");
+  // };
+
+
   const fieldsData = tableHeader.map((item, idx) => {
     return item === "S/N" ? (
       <input
@@ -17,7 +24,7 @@ export default function Form() {
         name="idx"
         key={idx}
         // value={Math.random(0, 9).toFixed(9)}
-        value={currentData != null ? currentData[0].idx : tableData.rows.length + 1}
+        value={currentData != null ? currentData[0].idx : currentId}
         className="hidden"
         readOnly
       />

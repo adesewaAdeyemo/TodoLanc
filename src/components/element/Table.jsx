@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Button from "./Button";
 import Form from "./Form";
 import { ToDoContext } from "../layout/pages/Task";
 
 export default function Table() {
-  const { tableData, setTableData, showForm, setShowForm, setCurrentData } = useContext(ToDoContext);
+  const { tableData, setTableData, showForm, setShowForm, setCurrentData } =
+    useContext(ToDoContext);
 
   const title = tableData.title ? tableData.title : "Title";
   const tableHeader = tableData.header;
@@ -16,12 +17,14 @@ export default function Table() {
     let data = tableRows.filter((item) => item.idx === id);
 
     if (data) setCurrentData(data);
-    
   };
+
+  const [currentId, setCurrentId] = useState(1);
 
   const addNew = (e) => {
     e.preventDefault;
     setShowForm(!showForm);
+    setCurrentId(currentId + 1);
   };
 
   const deleteTask = (e) => {
@@ -29,7 +32,10 @@ export default function Table() {
     e.preventDefault;
     let id = e.target.id;
     // console.log(tableRows.filter((item) => item.idx !== id));
-    setTableData({ ...tableData, rows: tableRows.filter((item) => item.idx !== id) });
+    setTableData({
+      ...tableData,
+      rows: tableRows.filter((item) => item.idx !== id),
+    });
   };
 
   const searchTaskToLower = (e) => {
@@ -40,9 +46,11 @@ export default function Table() {
 
     search = search.toLowerCase();
     setTableData({
-      ...tableData, rows: tableRows.filter((item) => item.title.toLowerCase().includes(search))
-  });
-  
+      ...tableData,
+      rows: tableRows.filter((item) =>
+        item.title.toLowerCase().includes(search)
+      ),
+    });
   };
 
   let header = tableHeader.map((item, idx) => (
@@ -130,11 +138,22 @@ export default function Table() {
               <th className="border px-4 py-2 font-normal text-slate-900"></th>
             </tr>
           </thead>
-          <tbody>{rows && rows.length ? rows : <p className="text-center text-slate-400 italic py-2 font-thin">Table is empty ...  </p>}</tbody>
+          <tbody>
+            {rows && rows.length ? (
+              rows
+            ) : (
+              <tr>
+                {" "}
+                <p className="text-center text-slate-400 italic font-thin min-w-full text-nowrap py-2 px-3">
+                  Table is empty ...{" "}
+                </p>{" "}
+              </tr>
+            )}
+          </tbody>
         </table>
       </div>
 
-      {showForm ? <Form title={title} fields={tableHeader} /> : null}
+      {showForm ? <Form currentId={currentId}/> : null}
     </div>
   );
 }
