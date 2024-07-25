@@ -16,7 +16,8 @@ export default function Form() {
         type="number"
         name="idx"
         key={idx}
-        value={Math.random(0, 9).toFixed(9)}
+        // value={Math.random(0, 9).toFixed(9)}
+        value={currentData != null ? currentData[0].idx : tableData.rows.length + 1}
         className="hidden"
         readOnly
       />
@@ -24,7 +25,11 @@ export default function Form() {
       <div className="col-span-full pb-3" key={idx}>
         <label className="text-sm font-medium text-slate-900">{item}</label>
         <div className="mt-2">
-          <Input item={item.toLowerCase()} val= {currentData != null ? currentData[0][item.toLowerCase()] : ""} key={idx} />
+          <Input
+            item={item.toLowerCase()}
+            val={currentData != null ? currentData[0][item.toLowerCase()] : ""}
+            key={idx}
+          />
         </div>
       </div>
     );
@@ -44,9 +49,9 @@ export default function Form() {
       console.log("Title field is required");
       return("Title field is required");
     }
-    console.log(data);
+    console.log(data.idx);
     setTableData({ ...tableData, rows: [...tableData.rows, data] });
-    console.log(tableData);
+    // console.log(tableData);
     closeForm(e);
     alert("Form Submitted");
     } catch (error) {
@@ -67,9 +72,18 @@ export default function Form() {
       }
     });
     setTableData({ ...tableData, rows: newData });
+    console.log(tableData);
     setCurrentData(null);
     closeForm(e);
     alert("Form Updated");
+  };
+
+  const duplicateForm = (e) => {
+    e.preventDefault();
+    console.log(currentData[0]['idx']);
+    // const id = currentData[0].idx;
+    setCurrentData(...currentData, { ...currentData[0], idx: 0 });
+    // console.log(currentData.idx);
   };
 
   return showForm ? (
@@ -86,7 +100,7 @@ export default function Form() {
             {currentData == null ? (
               <Button cancel='true' onClick={closeForm}></Button>
             ) : (
-              <Button className="ml-auto">Duplicate</Button>
+              <Button className="ml-auto" onClick={duplicateForm}>Duplicate</Button>
             )}
           </div>
           <p className="my-1 text-sm font-light leading-6 text-slate-600">
@@ -104,7 +118,7 @@ export default function Form() {
               Cancel
             </button>
             <Button type="submit">
-              {currentData == null ? "Add New" : "Update"}
+              {currentData == null || currentData.id==0 ? "Add New" : "Update"}
             </Button>
           </div>
         </div>

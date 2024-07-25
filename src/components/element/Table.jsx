@@ -11,7 +11,7 @@ export default function Table() {
   const tableRows = tableData.rows;
 
   const open = (uid) => {
-    let id = uid * 1 + 1;
+    let id = uid;
     setShowForm(!showForm);
     let data = tableRows.filter((item) => item.idx === id);
 
@@ -27,7 +27,8 @@ export default function Table() {
   const deleteTask = (e) => {
     e.stopPropagation();
     e.preventDefault;
-    let id = e.target.id*1 + 1;
+    let id = e.target.id;
+    // console.log(tableRows.filter((item) => item.idx !== id));
     setTableData({ ...tableData, rows: tableRows.filter((item) => item.idx !== id) });
   };
 
@@ -41,6 +42,7 @@ export default function Table() {
     setTableData({
       ...tableData, rows: tableRows.filter((item) => item.title.toLowerCase().includes(search))
   });
+  
   };
 
   let header = tableHeader.map((item, idx) => (
@@ -52,8 +54,8 @@ export default function Table() {
   let rows = tableRows.map((item, index) => (
     <tr
       key={index}
-      id={index}
-      onClick={() => open(index)}
+      id={item.idx}
+      onClick={() => open(item.idx)}
       className="cursor-pointer"
     >
       {/* it was seeing td not tr */}
@@ -88,8 +90,8 @@ export default function Table() {
         {item.status}
       </td>
       <td className="border px-4 py-2 font-normal text-slate-700">
-        <a href="#" id={index} onClick={deleteTask}>
-          <Button cancel='true'></Button>
+        <a href="#" id={item.idx} onClick={deleteTask}>
+          x
         </a>
       </td>
     </tr>
