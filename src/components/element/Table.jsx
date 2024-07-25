@@ -144,12 +144,17 @@ export default function Table() {
             ) : (
               <tr>
                 {" "}
-                <p className="text-center text-slate-400 italic font-thin min-w-full text-nowrap py-2 px-3">
-                  Table is empty ...{" "}
-                </p>{" "}
               </tr>
             )}
           </tbody>
+          {rows && rows.length ? <></> :
+            <p className="text-center text-slate-400 italic font-thin min-w-full text-nowrap py-2 px-3">
+              Table is empty ...
+            </p>
+
+
+
+          }
         </table>
       </div>
 
