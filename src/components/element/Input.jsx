@@ -13,7 +13,7 @@ export default function Input( props ) {
       name={item}
       defaultValue={value ? value : ""}
       
-      />
+      /> 
   ) : item === "deadline" ? (
     <input
       type="date"
