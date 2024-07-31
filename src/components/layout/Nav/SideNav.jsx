@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom';
 export default function SideNav() {
   return (
     <div className="bg-white">
@@ -6,36 +7,36 @@ export default function SideNav() {
         <div className="flex flex-col">
           {/* <div className="logo px-5 pb-4">
             <h1>
-              <a href="#" className="text-3xl text-cyan-800 font-bold">
+              <Link to={#} className="text-3xl text-cyan-800 font-bold">
                 CheckOut
-              </a>
+              </Link>
             </h1>
           </div> */}
           <div className="home border-b-2 py-2 px-9">
-            <a href="#" className="text-md text-gray-900">
+            <Link to={"/"} className="text-md text-gray-900">
               My Space
-            </a>
+            </Link>
           </div>
           <div className="task border-b-2 py-2 px-9">
-            <a href="#" className="text-md text-gray-900">
+            <Link to={"/todo"} className="text-md text-gray-900">
               Task
-            </a>
+            </Link>
           </div>
           <div className="team border-b-2 py-2 px-9">
-            <a href="#" className="text-md text-gray-900">
+            <Link to={"/team"} className="text-md text-gray-900">
               Team
-            </a>
+            </Link>
           </div>
           <div className="project border-b-2 py-2 px-9">
-            <a href="#" className="text-md text-gray-900">
+            <Link to={"/projects"} className="text-md text-gray-900">
               Project
-            </a>
+            </Link>
           </div>
         </div>
         <div className="logout border-t-2  pt-2 px-9">
-          <a href="#" className="text-md text-gray-900">
+          <Link to={"/"} className="text-md text-gray-900">
             LogOut
-          </a>
+          </Link>
         </div>
       </div>
     </div>

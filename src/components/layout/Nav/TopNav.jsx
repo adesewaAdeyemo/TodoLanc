@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 
 export default function TopNav(){
     const [user, setUser] = useState(null);
@@ -18,9 +19,9 @@ export default function TopNav(){
       <div className="top-nav w-full border-b-2 border-gray-100 py-3 pr-9 pl-9 bg-white">
         <div className="flex flex-row justify-between align-middle items-center">
           <div className="">
-            <a href="#" className="text-3xl text-cyan-800 font-bold">
+            <Link href={"/"} className="text-3xl text-cyan-800 font-bold">
               CheckOut
-            </a>
+            </Link>
           </div>
           <div className="flex items-center gap-4">
             <img

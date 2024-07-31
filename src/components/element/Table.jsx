@@ -1,29 +1,34 @@
-import React, { useContext, useState } from "react";
+import React, {useDeferredValue, useEffect, useState } from "react";
 import Button from "./Button";
 import Form from "./Form";
-import { ToDoContext } from "../layout/pages/Task";
-
-const tableHeader = [
-  "S/N",
-  "Title",
-  "Priority",
-  "Description",
-  "Project",
-  "Deadline",
-  "Repeat",
-  "Assignee",
-  "Assign",
-  "Status",
-]
 
 
-export default function Table() {
-  const { tableData, setTableData, showForm, setShowForm, setCurrentData, tasks, setTasks } =
-    useContext(ToDoContext);
 
-  const title = tableData.title ? tableData.title : "Title";
+export default function Table( props ) {
+  // const { showForm, setShowForm, setCurrentData, tableRows, setTasks } =
+  //   useContext(ToDoContext);
+  const [showForm, setShowForm, currentData, setCurrentData, tableRows, setTableRows, tableHeader] = [props.showForm, props.setShowForm, props.currentData, props.setCurrentData, props.data, props.setdata, props.tableHeader]
+  const isAdmin = props.isAdmin;
+  const show = !isAdmin ? isAdmin : true; 
 
-  const tableRows = tasks;
+  const [query, setQuery] = useState("");
+  const deferredValue = useDeferredValue(query);
+
+  useEffect(() => {
+    if (!deferredValue) {
+      setTableRows(tableRows);
+      return;
+    }
+
+    let lowerCaseValue = deferredValue.toLowerCase();
+
+    let filteredRows = tableRows.filter((data) =>
+      data.title.toLowerCase().includes(lowerCaseValue)
+    );
+
+    setTableRows(filteredRows);
+  }, [deferredValue]);
+
 
   const open = (uid) => {
     let id = uid;
@@ -33,42 +38,29 @@ export default function Table() {
     if (data) setCurrentData(data);
   };
 
-  const [currentId, setCurrentId] = useState(1);
 
   const addNew = (e) => {
     e.preventDefault;
-    console.log("add new", tasks);
+    console.log("add new", tableRows);
     setShowForm(!showForm);
-    setCurrentId(currentId + 1);
   };
+
 
   const deleteTask = (e) => {
     e.stopPropagation();
     e.preventDefault;
     let id = e.target.id;
     // console.log(tableRows.filter((item) => item.idx !== id));
-    setTasks(
-      tableRows.filter((item) => item.idx !== id),
-    );
+    setTableRows(tableRows.filter((item) => item.idx !== id));
   };
 
-  const searchTaskToLower = (e) => {
-    e.preventDefault;
-    let search = e.target.value;
-
-    if (search === "") return setTasks(tableRows);
-
-    search = search.toLowerCase();
-    setTasks(tableRows.filter((item) =>
-        item.title.toLowerCase().includes(search)
-      ));
-  };
 
   let header = tableHeader.map((item, idx) => (
     <th className="border px-4 py-2 font-normal text-slate-900" key={idx}>
       {item}
     </th>
   ));
+
 
   let rows = tableRows.map((item, index) => (
     <tr
@@ -78,36 +70,18 @@ export default function Table() {
       className="cursor-pointer"
     >
       {/* it was seeing td not tr */}
-      <td className="border px-4 py-2 font-normal text-slate-700">
-        {index + 1}
-      </td>
-      <td className="border px-4 py-2 font-normal text-slate-700">
-        {item.title}
-      </td>
-      <td className="border px-4 py-2 font-normal text-slate-700">
-        {item.priority}
-      </td>
-      <td className="border px-4 py-2 font-normal text-slate-700">
-        {item.description}
-      </td>
-      <td className="border px-4 py-2 font-normal text-slate-700">
-        {item.project}
-      </td>
-      <td className="border px-4 py-2 font-normal text-slate-700">
-        {item.deadline}
-      </td>
-      <td className="border px-4 py-2 font-normal text-slate-700">
-        {item.repeat}
-      </td>
-      <td className="border px-4 py-2 font-normal text-slate-700">
-        {item.assignee}
-      </td>
-      <td className="border px-4 py-2 font-normal text-slate-700">
-        {item.assign}
-      </td>
-      <td className="border px-4 py-2 font-normal text-slate-700">
-        {item.status}
-      </td>
+      {
+      tableHeader.map((val, idx) => {
+        let value = val.toLowerCase();
+        console.log(`${item}.${value}`);
+        console.log(`${item[value]}`)
+        return (
+          <td className="border px-4 py-2 font-normal text-slate-700" key={idx}>
+            {value == "s/n" ? index + 1 : `${item[value]}`}
+          </td>
+        );
+      })
+      }
       <td className="border px-4 py-2 font-normal text-slate-700">
         <a href="#" id={item.idx} onClick={deleteTask}>
           x
@@ -116,11 +90,12 @@ export default function Table() {
     </tr>
   ));
 
-  if (!tableData) return <></>;
+
+  if (!tableRows) return <></>;
+
 
   return (
     <div className="">
-      <h2 className="text-xl pb-3 text-slate-900">{title} Table</h2>
       <div className="border shadow-md min-w-full overflow-scroll">
         <div className="flex flex-row justify-between items-center px-5 py-2 bg-white min-w-full sticky">
           <label className="relative block w-10/12">
@@ -132,14 +107,17 @@ export default function Table() {
               ></i>
             </span>
             <input
-              onChange={searchTaskToLower}
+              value={query}
+              onInput={(e) => setQuery(e.target.value)}
               className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-lg py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
               placeholder="Search for anything . . . "
-              type="text"
+              type="search"
               name="search"
             />
           </label>
-          <Button onClick={addNew}>Add New</Button>
+          <Button onClick={addNew} className={show ? '' : 'hidden'}>
+            Add New
+          </Button>
         </div>
 
         <table className="table-fixed min-w-full bg-white overflow-x-scroll">
@@ -154,22 +132,25 @@ export default function Table() {
               rows
             ) : (
               <tr className="text-center text-slate-400 italic font-thin min-w-full text-nowrap py-2 px-3">
-                <td colSpan={10}>No Records Found</td>
+                <td colSpan={10}>No Records Found . . .</td>
               </tr>
             )}
           </tbody>
-          {/* {rows && rows.length ? <></> :
-            <tfoot className="text-center text-slate-400 italic font-thin min-w-full text-nowrap py-2 px-3">
-              <td colSpan={10}>No Records Found</td>
-            </tfoot>
-
-
-
-          }*/}
         </table>
       </div>
 
-      {showForm ? <Form currentId={currentId} /> : null}
+      {showForm ? (
+        <Form
+          showForm={showForm}
+          setShowForm={setShowForm}
+          currentData={currentData}
+          setCurrentData={setCurrentData}
+          tableRows={tableRows}
+          setTableRows={setTableRows}
+          formField={tableHeader}
+          show = {show}
+        />
+      ) : null}
     </div>
   );
 }
