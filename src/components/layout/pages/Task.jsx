@@ -27,7 +27,7 @@ export default function Task() {
 
   return (
     <div>
-      <h2 className="text-xl pb-3">Task Title</h2>
+      <h2 className="text-xl pb-3">Tasks</h2>
       <Table
         showForm={showForm}
         setShowForm={setShowForm}
