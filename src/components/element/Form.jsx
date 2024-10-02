@@ -41,6 +41,7 @@ export default function Form( props ) {
       <div className="col-span-full pb-3" key={idx}>
         <label className="text-sm font-medium text-slate-900">{item}</label>
         <div className="mt-2">
+          {/* if the field is this, use a variant. */}
           <Input
             item={item.toLowerCase()}
             val={currentData != null ? currentData[0][item.toLowerCase()] : ""}
@@ -50,6 +51,7 @@ export default function Form( props ) {
       </div>
     );
   });
+
   const closeForm = (e) => {
     console.log("close form", tableRows)
     e.preventDefault
@@ -62,10 +64,6 @@ export default function Form( props ) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    // if (!data.title || !data.name) {
-    //   alert("Title or Name field is required");
-    //   return("Title field is required");
-    // }
     
     setTableRows(tableRows =>{
       return  [...tableRows, {...data, idx: Math.floor(Math.random() * 1000000000).toString().padStart(9, "0") }]
@@ -82,9 +80,6 @@ export default function Form( props ) {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     const id = data.idx;
-    console.log(id);
-    console.log("update", currentData[0]);
-    console.log("updated data", data);
     const newData = tableRows.map((item) => {
       if (item.idx === id) {
         return data;
@@ -92,7 +87,6 @@ export default function Form( props ) {
         return item;
       }
     });
-    // setTableRows(tableRows => {...tableRows, newData});
     setTableRows(newData)
     setCurrentData(null);
     closeForm(e);

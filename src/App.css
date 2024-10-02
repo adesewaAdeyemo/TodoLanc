@@ -26,3 +26,9 @@ list-style: none;
   max-height: 90vh !important;
   
 }
+
+test{
+    color: rgb(6, 70, 70);
+    align-content: center;
+    align-items: center;
+}

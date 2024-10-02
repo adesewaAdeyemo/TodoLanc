@@ -12,7 +12,8 @@ function App() {
       <div className="w-full">
         <MainTpl>
           <Routes>
-            <Route path="/" element={<Space />}></Route>
+            <Route path="/" element={<Task />}></Route>
+            <Route path="/space" element={<Space />}></Route>
             <Route path="/todo" element={<Task />}></Route>
             <Route path="/team" element={<Team />}></Route>
             <Route path="/projects" element={<Project />}></Route>
